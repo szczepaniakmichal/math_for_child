@@ -16,31 +16,30 @@
             --thirdColor: rgba(81, 203, 238, 1);
             --thirdColor: yellowgreen;
             --fourthColor: silver;
-        }
+            --light-blue: rgba(81, 203, 238, 1); }
 
         * {
             box-sizing: border-box;
             margin: 0;
-            padding: 0;
-        }
+            padding: 0; }
 
         body {
             font-family: sans-serif;
             font-size: 1.3rem;
-            counter-reset: task;
-        }
-
+            counter-reset: task; }
         body .input-data {
             display: flex;
             flex-direction: column;
-        }
-
+            gap: 10px; }
         body .input-data label {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            height: 30px; }
+        body .input-data .math-operation {
+            height: 30px; }
+        body .input-data .math-operation input {
             height: 30px;
-        }
-
+            width: 30px; }
         body .btn {
             padding: 20px;
             color: var(--primaryColor);
@@ -49,100 +48,75 @@
             font-family: sans-serif;
             text-transform: uppercase;
             background-color: var(--secondaryColor);
-            border: none;
-        }
-
+            border: none; }
         body .task-list {
-            padding-left: 30px;
-        }
-
+            padding-left: 30px; }
         body .task-list__item {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 200px));
-            padding: 10px;
-        }
-
+            padding: 10px; }
         body .task-list__item::before {
             counter-increment: task;
             content: counter(task) ".";
-            padding-right: 10px;
-        }
-
+            padding-right: 10px; }
         body .task-list__result {
             margin-left: 20px;
             border: 1px solid #000;
-            outline: none;
-        }
-
+            outline: none; }
         body .task-list__result.correct {
-            background-color: var(--thirdColor);
-        }
-
+            background-color: var(--thirdColor); }
         body .task-list__result.correct:focus {
             box-shadow: 0 0 5px var(--thirdColor);
-            border: 1px solid var(--thirdColor);
-        }
-
+            border: 1px solid var(--thirdColor); }
         body .task-list__result.in-correct {
-            background-color: red;
-        }
-
+            background-color: red; }
         body .task-list__result.in-correct:focus {
             box-shadow: 0 0 5px red;
-            border: 1px solid red;
-        }
-
+            border: 1px solid red; }
         body .task-list__result:focus {
-            box-shadow: 0 0 5px #51cbee;
-            border: 1px solid #51cbee;
-        }
+            box-shadow: 0 0 15px var(--light-blue);
+            border: 1px solid var(--light-blue); }
 
         @media screen and (max-width: 992px) {
             body {
-                padding: 10px;
-            }
-
+                padding: 10px; }
             body .input-data {
                 margin-bottom: 5px;
-                gap: 5px;
-            }
-
+                gap: 5px; }
+            body .input-data .math-operation {
+                grid-template-columns: 1fr 1fr;
+                margin-bottom: 5px; }
+            body .input-data .math-operation input {
+                margin-left: auto; }
+            body .input-data .input-value {
+                padding: 3px 0;
+                font-size: 1.5rem; }
+            body .input-data label {
+                grid-template-columns: 1fr;
+                height: auto; }
             body .btn {
                 width: 100%;
-                margin-bottom: 5px;
-            }
-
+                padding: 5px;
+                margin-bottom: 5px; }
             body .task-list {
-                padding: 0;
-            }
-
+                padding: 0; }
             body .task-list__item {
                 display: grid;
                 grid-template-columns: repeat(3, minmax(0, 200px));
                 gap: 10px;
-                align-items: baseline;
-            }
-
+                align-items: baseline; }
             body .task-list__item::before {
                 counter-increment: task;
                 content: counter(task) ".";
-                padding-right: 10px;
-            }
-
+                padding-right: 10px; }
             body .task-list__item .correct-answer {
-                grid-area: 2/1/3/4;
-            }
-
+                grid-area: 2/1/3/4; }
             body .task-list__item .in-correct-answer {
-                grid-area: 2/1/3/4;
-            }
-
+                grid-area: 2/1/3/4; }
             body .task-list__result {
                 margin: 0;
                 width: 100%;
-                height: 30px;
-            }
-        }
+                height: 30px; } }
 
     </style>
 </head>
@@ -150,17 +124,17 @@
 <body>
 <div class="input-data">
     <label for="how-many-task">how many tasks?
-        <input type="number" class="how-many-task" id="how-many-task" placeholder="how many tasks?">
+        <input type="number" class="input-value how-many-task" id="how-many-task" placeholder="how many tasks?">
     </label>
 
     <label for="how-many-value">how many values to calculate?
-        <input type="number" class="how-many-value" id="how-many-value" placeholder="how many values to calculate?">
+        <input type="number" class="input-value how-many-value" id="how-many-value" placeholder="how many values to calculate?">
     </label>
 
     <label for="to-value">maximum single value?
-        <input type="number" class="to-value" id="to-value" placeholder="maximum single value?">
+        <input type="number" class="input-value to-value" id="to-value" placeholder="maximum single value?">
     </label>
-    <p>type of mathematical operations:</p>
+    <p>Type of mathematical operations:</p>
     <label for="addition" class="math-operation">addition
         <input type="checkbox" id="addition" value="+">
     </label>
@@ -1069,7 +1043,7 @@
             /*! no static exports found */
             /***/ (function(module, exports, __webpack_require__) {
 
-                eval("exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\")(false);\n// Module\nexports.push([module.i, \":root {\\n  --primaryColor: #fff;\\n  --secondaryColor: orangered;\\n  --thirdColor: rgba(81, 203, 238, 1);\\n  --thirdColor: yellowgreen;\\n  --fourthColor: silver;\\n  --light-blue: rgba(81, 203, 238, 1); }\\n\\n* {\\n  box-sizing: border-box;\\n  margin: 0;\\n  padding: 0; }\\n\\nbody {\\n  font-family: sans-serif;\\n  font-size: 1.3rem;\\n  counter-reset: task; }\\n  body .input-data {\\n    display: flex;\\n    flex-direction: column;\\n    gap: 10px; }\\n    body .input-data label {\\n      display: grid;\\n      grid-template-columns: 1fr 1fr;\\n      height: 30px; }\\n    body .input-data .math-operation {\\n      height: 30px; }\\n      body .input-data .math-operation input {\\n        height: 30px;\\n        width: 30px; }\\n  body .btn {\\n    padding: 20px;\\n    color: var(--primaryColor);\\n    font-size: 32px;\\n    font-weight: 700;\\n    font-family: sans-serif;\\n    text-transform: uppercase;\\n    background-color: var(--secondaryColor);\\n    border: none; }\\n  body .task-list {\\n    padding-left: 30px; }\\n    body .task-list__item {\\n      display: grid;\\n      grid-template-columns: repeat(4, minmax(0, 200px));\\n      padding: 10px; }\\n      body .task-list__item::before {\\n        counter-increment: task;\\n        content: counter(task) \\\".\\\";\\n        padding-right: 10px; }\\n    body .task-list__result {\\n      margin-left: 20px;\\n      border: 1px solid #000;\\n      outline: none; }\\n      body .task-list__result.correct {\\n        background-color: var(--thirdColor); }\\n        body .task-list__result.correct:focus {\\n          box-shadow: 0 0 5px var(--thirdColor);\\n          border: 1px solid var(--thirdColor); }\\n      body .task-list__result.in-correct {\\n        background-color: red; }\\n        body .task-list__result.in-correct:focus {\\n          box-shadow: 0 0 5px red;\\n          border: 1px solid red; }\\n      body .task-list__result:focus {\\n        box-shadow: 0 0 15px var(--light-blue);\\n        border: 1px solid var(--light-blue); }\\n\\n@media screen and (max-width: 992px) {\\n  body {\\n    padding: 10px; }\\n    body .input-data {\\n      margin-bottom: 5px;\\n      gap: 5px; }\\n      body .input-data .math-operation input {\\n        margin-left: auto; }\\n    body .btn {\\n      width: 100%;\\n      margin-bottom: 5px; }\\n    body .task-list {\\n      padding: 0; }\\n      body .task-list__item {\\n        display: grid;\\n        grid-template-columns: repeat(3, minmax(0, 200px));\\n        gap: 10px;\\n        align-items: baseline; }\\n        body .task-list__item::before {\\n          counter-increment: task;\\n          content: counter(task) \\\".\\\";\\n          padding-right: 10px; }\\n        body .task-list__item .correct-answer {\\n          grid-area: 2/1/3/4; }\\n        body .task-list__item .in-correct-answer {\\n          grid-area: 2/1/3/4; }\\n      body .task-list__result {\\n        margin: 0;\\n        width: 100%;\\n        height: 30px; } }\\n\", \"\"]);\n\n\n//# sourceURL=webpack:///./src/sass/index.scss?./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js");
+                eval("exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\")(false);\n// Module\nexports.push([module.i, \":root {\\n  --primaryColor: #fff;\\n  --secondaryColor: orangered;\\n  --thirdColor: rgba(81, 203, 238, 1);\\n  --thirdColor: yellowgreen;\\n  --fourthColor: silver;\\n  --light-blue: rgba(81, 203, 238, 1); }\\n\\n* {\\n  box-sizing: border-box;\\n  margin: 0;\\n  padding: 0; }\\n\\nbody {\\n  font-family: sans-serif;\\n  font-size: 1.3rem;\\n  counter-reset: task; }\\n  body .input-data {\\n    display: flex;\\n    flex-direction: column;\\n    gap: 10px; }\\n    body .input-data label {\\n      display: grid;\\n      grid-template-columns: 1fr 1fr;\\n      height: 30px; }\\n    body .input-data .math-operation {\\n      height: 30px; }\\n      body .input-data .math-operation input {\\n        height: 30px;\\n        width: 30px; }\\n  body .btn {\\n    padding: 20px;\\n    color: var(--primaryColor);\\n    font-size: 32px;\\n    font-weight: 700;\\n    font-family: sans-serif;\\n    text-transform: uppercase;\\n    background-color: var(--secondaryColor);\\n    border: none; }\\n  body .task-list {\\n    padding-left: 30px; }\\n    body .task-list__item {\\n      display: grid;\\n      grid-template-columns: repeat(4, minmax(0, 200px));\\n      padding: 10px; }\\n      body .task-list__item::before {\\n        counter-increment: task;\\n        content: counter(task) \\\".\\\";\\n        padding-right: 10px; }\\n    body .task-list__result {\\n      margin-left: 20px;\\n      border: 1px solid #000;\\n      outline: none; }\\n      body .task-list__result.correct {\\n        background-color: var(--thirdColor); }\\n        body .task-list__result.correct:focus {\\n          box-shadow: 0 0 5px var(--thirdColor);\\n          border: 1px solid var(--thirdColor); }\\n      body .task-list__result.in-correct {\\n        background-color: red; }\\n        body .task-list__result.in-correct:focus {\\n          box-shadow: 0 0 5px red;\\n          border: 1px solid red; }\\n      body .task-list__result:focus {\\n        box-shadow: 0 0 15px var(--light-blue);\\n        border: 1px solid var(--light-blue); }\\n\\n@media screen and (max-width: 992px) {\\n  body {\\n    padding: 10px; }\\n    body .input-data {\\n      margin-bottom: 5px;\\n      gap: 5px; }\\n      body .input-data .math-operation {\\n        grid-template-columns: 1fr 1fr;\\n        margin-bottom: 5px; }\\n        body .input-data .math-operation input {\\n          margin-left: auto; }\\n      body .input-data .input-value {\\n        padding: 3px 0;\\n        font-size: 1.5rem; }\\n      body .input-data label {\\n        grid-template-columns: 1fr;\\n        height: auto; }\\n    body .btn {\\n      width: 100%;\\n      padding: 5px;\\n      margin-bottom: 5px; }\\n    body .task-list {\\n      padding: 0; }\\n      body .task-list__item {\\n        display: grid;\\n        grid-template-columns: repeat(3, minmax(0, 200px));\\n        gap: 10px;\\n        align-items: baseline; }\\n        body .task-list__item::before {\\n          counter-increment: task;\\n          content: counter(task) \\\".\\\";\\n          padding-right: 10px; }\\n        body .task-list__item .correct-answer {\\n          grid-area: 2/1/3/4; }\\n        body .task-list__item .in-correct-answer {\\n          grid-area: 2/1/3/4; }\\n      body .task-list__result {\\n        margin: 0;\\n        width: 100%;\\n        height: 30px; } }\\n\", \"\"]);\n\n\n//# sourceURL=webpack:///./src/sass/index.scss?./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js");
 
                 /***/ }),
 
