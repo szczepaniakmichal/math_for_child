@@ -11,12 +11,15 @@
 
     <style>
         :root {
-            --primaryColor: #fff;
-            --secondaryColor: orangered;
-            --thirdColor: rgba(81, 203, 238, 1);
-            --thirdColor: yellowgreen;
-            --fourthColor: silver;
-            --light-blue: rgba(81, 203, 238, 1); }
+            --color-white: #fff;
+            --color-orange: orangered;
+            --color-yellowgreen: yellowgreen;
+            --color-silver: silver;
+            --color-light-blue: rgba(81, 203, 238, 1);
+            --padding-button: 1.3rem;
+            --font-size-button: 2rem;
+            --mobile-padding-button: calc(2%);
+            --mobile-padding-container: 10px; }
 
         * {
             box-sizing: border-box;
@@ -26,7 +29,8 @@
         body {
             font-family: sans-serif;
             font-size: 1.3rem;
-            counter-reset: task; }
+            counter-reset: task;
+            padding: 1rem; }
         body .input-data {
             display: flex;
             flex-direction: column;
@@ -40,46 +44,52 @@
         body .input-data .math-operation input {
             height: 30px;
             width: 30px; }
+        body .input-data__mathematical-operations {
+            font-weight: 700; }
         body .btn {
-            padding: 20px;
-            color: var(--primaryColor);
-            font-size: 32px;
+            padding: var(--padding-button);
+            color: var(--color-white);
+            font-size: var(--font-size-button);
             font-weight: 700;
             font-family: sans-serif;
             text-transform: uppercase;
-            background-color: var(--secondaryColor);
+            background-color: var(--color-orange);
             border: none; }
-        body .task-list {
-            padding-left: 30px; }
+        body .task-list__task {
+            padding-bottom: calc(var(--font-size-button) + 2 * (var(--padding-button))); }
         body .task-list__item {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 200px));
+            display: flex;
+            gap: 10px;
             padding: 10px; }
-        body .task-list__item::before {
+        body .task-list__item:before {
             counter-increment: task;
             content: counter(task) ".";
-            padding-right: 10px; }
+            padding-right: 10px;
+            color: var(--color-orange); }
         body .task-list__result {
             margin-left: 20px;
             border: 1px solid #000;
             outline: none; }
         body .task-list__result.correct {
-            background-color: var(--thirdColor); }
+            background-color: var(--color-yellowgreen); }
         body .task-list__result.correct:focus {
-            box-shadow: 0 0 5px var(--thirdColor);
-            border: 1px solid var(--thirdColor); }
+            box-shadow: 0 0 5px var(--color-yellowgreen);
+            border: 1px solid var(--color-yellowgreen); }
         body .task-list__result.in-correct {
             background-color: red; }
         body .task-list__result.in-correct:focus {
             box-shadow: 0 0 5px red;
             border: 1px solid red; }
         body .task-list__result:focus {
-            box-shadow: 0 0 15px var(--light-blue);
-            border: 1px solid var(--light-blue); }
+            box-shadow: 0 0 15px var(--color-yellowgreen);
+            border: 1px solid var(--color-yellowgreen); }
+        body .task-list__btn-check-task {
+            position: fixed;
+            bottom: 0; }
 
         @media screen and (max-width: 992px) {
             body {
-                padding: 10px; }
+                padding: var(--mobile-padding-container); }
             body .input-data {
                 margin-bottom: 5px;
                 gap: 5px; }
@@ -90,20 +100,21 @@
                 margin-left: auto; }
             body .input-data .input-value {
                 padding: 3px 0;
-                font-size: 1.5rem; }
+                font-size: 1.5rem;
+                max-width: calc(100vw -  2 * var(--mobile-padding-container)); }
             body .input-data label {
                 grid-template-columns: 1fr;
                 height: auto; }
             body .btn {
                 width: 100%;
-                padding: 5px;
-                margin-bottom: 5px; }
-            body .task-list {
-                padding: 0; }
+                padding: 5px; }
+            body .task-list__task {
+                padding-bottom: calc(var(--font-size-button) + 2 * (var(--mobile-padding-button))); }
             body .task-list__item {
                 display: grid;
-                grid-template-columns: repeat(3, minmax(0, 200px));
+                grid-template-columns: repeat(3, auto) minmax(30px, 1fr);
                 gap: 10px;
+                width: 100%;
                 align-items: baseline; }
             body .task-list__item::before {
                 counter-increment: task;
@@ -116,45 +127,84 @@
             body .task-list__result {
                 margin: 0;
                 width: 100%;
-                height: 30px; } }
+                height: 30px; }
+            body .task-list__btn-check-task {
+                padding: 5px;
+                width: calc(100% - 2 * var(--mobile-padding-container)); } }
 
     </style>
 </head>
 
 <body>
-<div class="input-data">
+<section class="input-data">
     <label for="how-many-task">how many tasks?
-        <input type="number" class="input-value how-many-task" id="how-many-task" placeholder="how many tasks?">
+        <input class="input-value how-many-task"
+               id="how-many-task"
+               placeholder="how many tasks?"
+               type="number"
+        >
     </label>
 
     <label for="how-many-value">how many values to calculate?
-        <input type="number" class="input-value how-many-value" id="how-many-value" placeholder="how many values to calculate?">
+        <input class="input-value how-many-value"
+               id="how-many-value"
+               min="2"
+               placeholder="how many values to calculate?"
+               type="number"
+        >
     </label>
 
     <label for="to-value">maximum single value?
-        <input type="number" class="input-value to-value" id="to-value" placeholder="maximum single value?">
+        <input class="input-value to-value"
+               id="to-value"
+               placeholder="maximum single value?"
+               type="number"
+        >
     </label>
-    <p>Type of mathematical operations:</p>
-    <label for="addition" class="math-operation">addition
-        <input type="checkbox" id="addition" value="+">
-    </label>
-    <label for="subtraction" class="math-operation">subtraction
-        <input type="checkbox" id="subtraction" value="-">
-    </label>
-    <label for="multiplication" class="math-operation">multiplication
-        <input type="checkbox" id="multiplication" value="*">
-    </label>
-    <label for="division" class="math-operation">division
-        <input type="checkbox" id="division" value="/">
-    </label>
-</div>
+    <p class="input-data__mathematical-operations">Type of mathematical operations:</p>
+    <div>
+        <label class="math-operation"
+               for="addition"
+        >addition
+            <input id="addition"
+                   type="checkbox"
+                   value="+"
+            >
+        </label>
+        <label class="math-operation"
+               for="subtraction"
+        >subtraction
+            <input id="subtraction"
+                   type="checkbox"
+                   value="-"
+            >
+        </label>
+        <label class="math-operation"
+               for="multiplication"
+        >multiplication
+            <input id="multiplication"
+                   type="checkbox"
+                   value="*"
+            >
+        </label>
+        <label class="math-operation"
+               for="division"
+        >division
+            <input id="division"
+                   type="checkbox"
+                   value="/"
+            >
+        </label>
+    </div>
+</section>
 
-<button class="btn btn-generate-task">generate tasks</button>
-<button class="btn btn-check-task">check all tasks</button>
+<section class="task-list">
+    <button class="task-list__btn-generate-task btn btn-generate-task-js">generate tasks</button>
+    <ol class="task-list__task">
 
-<ol class="task-list">
-
-</ol>
+    </ol>
+    <button class="task-list__btn-check-task btn btn-check-task-js">check all tasks</button>
+</section>
 
 <script>
     /******/ (function(modules) { // webpackBootstrap
@@ -1043,7 +1093,7 @@
             /*! no static exports found */
             /***/ (function(module, exports, __webpack_require__) {
 
-                eval("exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\")(false);\n// Module\nexports.push([module.i, \":root {\\n  --primaryColor: #fff;\\n  --secondaryColor: orangered;\\n  --thirdColor: rgba(81, 203, 238, 1);\\n  --thirdColor: yellowgreen;\\n  --fourthColor: silver;\\n  --light-blue: rgba(81, 203, 238, 1); }\\n\\n* {\\n  box-sizing: border-box;\\n  margin: 0;\\n  padding: 0; }\\n\\nbody {\\n  font-family: sans-serif;\\n  font-size: 1.3rem;\\n  counter-reset: task; }\\n  body .input-data {\\n    display: flex;\\n    flex-direction: column;\\n    gap: 10px; }\\n    body .input-data label {\\n      display: grid;\\n      grid-template-columns: 1fr 1fr;\\n      height: 30px; }\\n    body .input-data .math-operation {\\n      height: 30px; }\\n      body .input-data .math-operation input {\\n        height: 30px;\\n        width: 30px; }\\n  body .btn {\\n    padding: 20px;\\n    color: var(--primaryColor);\\n    font-size: 32px;\\n    font-weight: 700;\\n    font-family: sans-serif;\\n    text-transform: uppercase;\\n    background-color: var(--secondaryColor);\\n    border: none; }\\n  body .task-list {\\n    padding-left: 30px; }\\n    body .task-list__item {\\n      display: grid;\\n      grid-template-columns: repeat(4, minmax(0, 200px));\\n      padding: 10px; }\\n      body .task-list__item::before {\\n        counter-increment: task;\\n        content: counter(task) \\\".\\\";\\n        padding-right: 10px; }\\n    body .task-list__result {\\n      margin-left: 20px;\\n      border: 1px solid #000;\\n      outline: none; }\\n      body .task-list__result.correct {\\n        background-color: var(--thirdColor); }\\n        body .task-list__result.correct:focus {\\n          box-shadow: 0 0 5px var(--thirdColor);\\n          border: 1px solid var(--thirdColor); }\\n      body .task-list__result.in-correct {\\n        background-color: red; }\\n        body .task-list__result.in-correct:focus {\\n          box-shadow: 0 0 5px red;\\n          border: 1px solid red; }\\n      body .task-list__result:focus {\\n        box-shadow: 0 0 15px var(--light-blue);\\n        border: 1px solid var(--light-blue); }\\n\\n@media screen and (max-width: 992px) {\\n  body {\\n    padding: 10px; }\\n    body .input-data {\\n      margin-bottom: 5px;\\n      gap: 5px; }\\n      body .input-data .math-operation {\\n        grid-template-columns: 1fr 1fr;\\n        margin-bottom: 5px; }\\n        body .input-data .math-operation input {\\n          margin-left: auto; }\\n      body .input-data .input-value {\\n        padding: 3px 0;\\n        font-size: 1.5rem; }\\n      body .input-data label {\\n        grid-template-columns: 1fr;\\n        height: auto; }\\n    body .btn {\\n      width: 100%;\\n      padding: 5px;\\n      margin-bottom: 5px; }\\n    body .task-list {\\n      padding: 0; }\\n      body .task-list__item {\\n        display: grid;\\n        grid-template-columns: repeat(3, minmax(0, 200px));\\n        gap: 10px;\\n        align-items: baseline; }\\n        body .task-list__item::before {\\n          counter-increment: task;\\n          content: counter(task) \\\".\\\";\\n          padding-right: 10px; }\\n        body .task-list__item .correct-answer {\\n          grid-area: 2/1/3/4; }\\n        body .task-list__item .in-correct-answer {\\n          grid-area: 2/1/3/4; }\\n      body .task-list__result {\\n        margin: 0;\\n        width: 100%;\\n        height: 30px; } }\\n\", \"\"]);\n\n\n//# sourceURL=webpack:///./src/sass/index.scss?./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js");
+                eval("exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\")(false);\n// Module\nexports.push([module.i, \":root {\\n  --color-white: #fff;\\n  --color-orange: orangered;\\n  --color-yellowgreen: yellowgreen;\\n  --color-silver: silver;\\n  --color-light-blue: rgba(81, 203, 238, 1);\\n  --padding-button: 1.3rem;\\n  --font-size-button: 2rem;\\n  --mobile-padding-button: calc(2%);\\n  --mobile-padding-container: 10px; }\\n\\n* {\\n  box-sizing: border-box;\\n  margin: 0;\\n  padding: 0; }\\n\\nbody {\\n  font-family: sans-serif;\\n  font-size: 1.3rem;\\n  counter-reset: task;\\n  padding: 1rem; }\\n  body .input-data {\\n    display: flex;\\n    flex-direction: column;\\n    gap: 10px; }\\n    body .input-data label {\\n      display: grid;\\n      grid-template-columns: 1fr 1fr;\\n      height: 30px; }\\n    body .input-data .math-operation {\\n      height: 30px; }\\n      body .input-data .math-operation input {\\n        height: 30px;\\n        width: 30px; }\\n    body .input-data__mathematical-operations {\\n      font-weight: 700; }\\n  body .btn {\\n    padding: var(--padding-button);\\n    color: var(--color-white);\\n    font-size: var(--font-size-button);\\n    font-weight: 700;\\n    font-family: sans-serif;\\n    text-transform: uppercase;\\n    background-color: var(--color-orange);\\n    border: none; }\\n  body .task-list__task {\\n    padding-bottom: calc(var(--font-size-button) + 2 * (var(--padding-button))); }\\n  body .task-list__item {\\n    display: flex;\\n    gap: 10px;\\n    padding: 10px; }\\n    body .task-list__item:before {\\n      counter-increment: task;\\n      content: counter(task) \\\".\\\";\\n      padding-right: 10px;\\n      color: var(--color-orange); }\\n  body .task-list__result {\\n    margin-left: 20px;\\n    border: 1px solid #000;\\n    outline: none; }\\n    body .task-list__result.correct {\\n      background-color: var(--color-yellowgreen); }\\n      body .task-list__result.correct:focus {\\n        box-shadow: 0 0 5px var(--color-yellowgreen);\\n        border: 1px solid var(--color-yellowgreen); }\\n    body .task-list__result.in-correct {\\n      background-color: red; }\\n      body .task-list__result.in-correct:focus {\\n        box-shadow: 0 0 5px red;\\n        border: 1px solid red; }\\n    body .task-list__result:focus {\\n      box-shadow: 0 0 15px var(--color-yellowgreen);\\n      border: 1px solid var(--color-yellowgreen); }\\n  body .task-list__btn-check-task {\\n    position: fixed;\\n    bottom: 0; }\\n\\n@media screen and (max-width: 992px) {\\n  body {\\n    padding: var(--mobile-padding-container); }\\n    body .input-data {\\n      margin-bottom: 5px;\\n      gap: 5px; }\\n      body .input-data .math-operation {\\n        grid-template-columns: 1fr 1fr;\\n        margin-bottom: 5px; }\\n        body .input-data .math-operation input {\\n          margin-left: auto; }\\n      body .input-data .input-value {\\n        padding: 3px 0;\\n        font-size: 1.5rem;\\n        max-width: calc(100vw -  2 * var(--mobile-padding-container)); }\\n      body .input-data label {\\n        grid-template-columns: 1fr;\\n        height: auto; }\\n    body .btn {\\n      width: 100%;\\n      padding: 5px; }\\n    body .task-list__task {\\n      padding-bottom: calc(var(--font-size-button) + 2 * (var(--mobile-padding-button))); }\\n    body .task-list__item {\\n      display: grid;\\n      grid-template-columns: repeat(3, auto) minmax(30px, 1fr);\\n      gap: 10px;\\n      width: 100%;\\n      align-items: baseline; }\\n      body .task-list__item::before {\\n        counter-increment: task;\\n        content: counter(task) \\\".\\\";\\n        padding-right: 10px; }\\n      body .task-list__item .correct-answer {\\n        grid-area: 2/1/3/4; }\\n      body .task-list__item .in-correct-answer {\\n        grid-area: 2/1/3/4; }\\n    body .task-list__result {\\n      margin: 0;\\n      width: 100%;\\n      height: 30px; }\\n    body .task-list__btn-check-task {\\n      padding: 5px;\\n      width: calc(100% - 2 * var(--mobile-padding-container)); } }\\n\", \"\"]);\n\n\n//# sourceURL=webpack:///./src/sass/index.scss?./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js");
 
                 /***/ }),
 
@@ -1461,7 +1511,7 @@
             /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
                 "use strict";
-                eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"test\", function() { return test; });\n/* harmony import */ var core_js_modules_es6_array_from__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es6.array.from */ \"./node_modules/core-js/modules/es6.array.from.js\");\n/* harmony import */ var core_js_modules_es6_array_from__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_array_from__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var core_js_modules_es6_regexp_to_string__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es6.regexp.to-string */ \"./node_modules/core-js/modules/es6.regexp.to-string.js\");\n/* harmony import */ var core_js_modules_es6_regexp_to_string__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_regexp_to_string__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var core_js_modules_es6_object_to_string__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es6.object.to-string */ \"./node_modules/core-js/modules/es6.object.to-string.js\");\n/* harmony import */ var core_js_modules_es6_object_to_string__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_object_to_string__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var core_js_modules_es7_symbol_async_iterator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es7.symbol.async-iterator */ \"./node_modules/core-js/modules/es7.symbol.async-iterator.js\");\n/* harmony import */ var core_js_modules_es7_symbol_async_iterator__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es7_symbol_async_iterator__WEBPACK_IMPORTED_MODULE_3__);\n/* harmony import */ var core_js_modules_es6_symbol__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/es6.symbol */ \"./node_modules/core-js/modules/es6.symbol.js\");\n/* harmony import */ var core_js_modules_es6_symbol__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_symbol__WEBPACK_IMPORTED_MODULE_4__);\n/* harmony import */ var core_js_modules_web_dom_iterable__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! core-js/modules/web.dom.iterable */ \"./node_modules/core-js/modules/web.dom.iterable.js\");\n/* harmony import */ var core_js_modules_web_dom_iterable__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_iterable__WEBPACK_IMPORTED_MODULE_5__);\n\n\n\n\n\n\n\nfunction _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }\n\nfunction _nonIterableSpread() { throw new TypeError(\"Invalid attempt to spread non-iterable instance\"); }\n\nfunction _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === \"[object Arguments]\") return Array.from(iter); }\n\nfunction _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }\n\nvar stringMath = __webpack_require__(/*! string-math */ \"./node_modules/string-math/string-math.js\");\n\nvar btnCheckAllTask = document.querySelector('.btn-check-task');\n\nfunction removeChild(nodeParent) {\n  while (nodeParent.firstChild) {\n    nodeParent.removeChild(nodeParent.firstChild);\n  }\n}\n\nfunction getMathOperation() {\n  var mathOperationArray = [];\n\n  _toConsumableArray(document.querySelectorAll('.math-operation input')).filter(function (mathOperation) {\n    return mathOperation.checked ? mathOperationArray.push(mathOperation.value) : null;\n  });\n\n  return mathOperationArray;\n}\n\nfunction addTask(howManyTask, nodeParent, child, howManyValue, toValue) {\n  // console.log(arguments);\n  var mathOperators = getMathOperation();\n\n  var _loop = function _loop(i) {\n    var task = document.createElement(child);\n    task.classList.add('task-list__item');\n    var numberValue = [];\n\n    for (var j = 0; j < howManyValue; j++) {\n      var number = Math.floor(Math.random() * toValue + 1);\n      numberValue.push(number);\n    } // generate every numbers in <span>\n\n\n    var matchTask = numberValue.map(function (number, index) {\n      var randomMathOperator = mathOperators[Math.floor(Math.random() * mathOperators.length)] || '+';\n      return \"<span class=\\\"number\\\">\".concat(number, \"</span>\\n                \").concat(index === numberValue.length - 1 ? '<span> </span>' : \"<span>\".concat(randomMathOperator, \" </span>\"), \"\\n\");\n    });\n    task.innerHTML = \"\\n        <span class=\\\"oneTask--js\\\">\".concat(matchTask.join(''), \"</span>\\n        <span>\\n            <label for=\\\"result\").concat(i, \"\\\"></label>\\n            <input type=\\\"number\\\" class=\\\"task-list__result\\\" id=\\\"result\").concat(i, \"\\\">\\n        </span>\\n        \");\n    nodeParent.appendChild(task);\n  };\n\n  for (var i = 0; i < howManyTask; i++) {\n    _loop(i);\n  }\n}\n\nfunction generateTask() {\n  var howManyTask = Number(document.querySelector(\".how-many-task\").value);\n  var howManyValue = Number(document.querySelector(\".how-many-value\").value);\n  var toValue = Number(document.querySelector(\".to-value\").value);\n  var taskList = document.querySelector('.task-list');\n  removeChild(taskList);\n  getMathOperation();\n  addTask(howManyTask, taskList, 'li', howManyValue, toValue);\n} // function checkCurrentTask() {\n//\n// }\n\n\nfunction checkAllTask() {\n  var allTask = _toConsumableArray(document.querySelectorAll(\".task-list__item\"));\n\n  allTask.forEach(function (task) {\n    var oneTask = task.querySelector('.oneTask--js');\n\n    var allNumbers = _toConsumableArray(oneTask.querySelectorAll('span')).map(function (span) {\n      return parseInt(span.textContent) ? parseInt(span.textContent) : span.textContent;\n    });\n\n    var answerInput = task.querySelector('.task-list__result');\n    var userAnswer = parseFloat(answerInput.value);\n    var resultText = task.querySelector('.result-text');\n\n    if (resultText) {\n      task.removeChild(resultText);\n    }\n\n    if (answerInput.value.length <= 0) {\n      answerInput.classList.remove('in-correct');\n      answerInput.classList.remove('correct');\n      return answerInput.setAttribute(\"placeholder\", \"complete the result\");\n    }\n\n    ;\n    var correctAnswer = document.createElement('span');\n    correctAnswer.classList.add('result-text');\n    correctAnswer.classList.add('correct-answer');\n    correctAnswer.textContent = 'Super to poprawny wynik :)';\n    var inCorrectAnswer = document.createElement('span');\n    inCorrectAnswer.classList.add('result-text');\n    inCorrectAnswer.classList.add('in-correct-answer');\n    inCorrectAnswer.textContent = 'Upsss... spróbuj jeszcze raz';\n    var counter = Number(stringMath(allNumbers.join('')).toFixed(2));\n\n    if (counter === userAnswer) {\n      answerInput.classList.add('correct');\n      answerInput.classList.remove('in-correct');\n      task.appendChild(correctAnswer);\n    } else {\n      answerInput.classList.add('in-correct');\n      answerInput.classList.remove('correct');\n      task.appendChild(inCorrectAnswer);\n    }\n  });\n}\n\nfunction test() {\n  var generateBtn = document.querySelector('.btn-generate-task');\n  generateBtn.addEventListener('click', generateTask); // generateBtn.click();\n}\n\nbtnCheckAllTask.addEventListener('click', checkAllTask); // setTimeout(() => {\n//     btnCheckAllTask.click();\n// }, 300)\n\ntest();\n\n\n//# sourceURL=webpack:///./src/scripts/test.js?");
+                eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"test\", function() { return test; });\n/* harmony import */ var core_js_modules_es6_array_from__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es6.array.from */ \"./node_modules/core-js/modules/es6.array.from.js\");\n/* harmony import */ var core_js_modules_es6_array_from__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_array_from__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var core_js_modules_es6_regexp_to_string__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es6.regexp.to-string */ \"./node_modules/core-js/modules/es6.regexp.to-string.js\");\n/* harmony import */ var core_js_modules_es6_regexp_to_string__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_regexp_to_string__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var core_js_modules_es6_object_to_string__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es6.object.to-string */ \"./node_modules/core-js/modules/es6.object.to-string.js\");\n/* harmony import */ var core_js_modules_es6_object_to_string__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_object_to_string__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var core_js_modules_es7_symbol_async_iterator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es7.symbol.async-iterator */ \"./node_modules/core-js/modules/es7.symbol.async-iterator.js\");\n/* harmony import */ var core_js_modules_es7_symbol_async_iterator__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es7_symbol_async_iterator__WEBPACK_IMPORTED_MODULE_3__);\n/* harmony import */ var core_js_modules_es6_symbol__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/es6.symbol */ \"./node_modules/core-js/modules/es6.symbol.js\");\n/* harmony import */ var core_js_modules_es6_symbol__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_symbol__WEBPACK_IMPORTED_MODULE_4__);\n/* harmony import */ var core_js_modules_web_dom_iterable__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! core-js/modules/web.dom.iterable */ \"./node_modules/core-js/modules/web.dom.iterable.js\");\n/* harmony import */ var core_js_modules_web_dom_iterable__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_iterable__WEBPACK_IMPORTED_MODULE_5__);\n\n\n\n\n\n\n\nfunction _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }\n\nfunction _nonIterableSpread() { throw new TypeError(\"Invalid attempt to spread non-iterable instance\"); }\n\nfunction _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === \"[object Arguments]\") return Array.from(iter); }\n\nfunction _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }\n\nvar stringMath = __webpack_require__(/*! string-math */ \"./node_modules/string-math/string-math.js\");\n\nvar btnCheckAllTask = document.querySelector('.btn-check-task-js');\n\nfunction removeChild(nodeParent) {\n  while (nodeParent.firstChild) {\n    nodeParent.removeChild(nodeParent.firstChild);\n  }\n}\n\nfunction getMathOperation() {\n  var mathOperationArray = [];\n\n  _toConsumableArray(document.querySelectorAll('.math-operation input')).filter(function (mathOperation) {\n    return mathOperation.checked ? mathOperationArray.push(mathOperation.value) : null;\n  });\n\n  return mathOperationArray;\n}\n\nfunction addTask(howManyTask, nodeParent, child, howManyValue, toValue) {\n  // console.log(arguments);\n  var mathOperators = getMathOperation();\n\n  var _loop = function _loop(i) {\n    var task = document.createElement(child);\n    task.classList.add('task-list__item');\n    var numberValue = [];\n\n    for (var j = 0; j < howManyValue; j++) {\n      var number = Math.floor(Math.random() * toValue + 1);\n      numberValue.push(number);\n    } // generate every numbers in <span>\n\n\n    var matchTask = numberValue.map(function (number, index) {\n      var randomMathOperator = mathOperators[Math.floor(Math.random() * mathOperators.length)] || '+';\n      return \"<span class=\\\"number\\\">\".concat(number, \"</span>\\n                \").concat(index === numberValue.length - 1 ? '<span> </span>' : \"<span>\".concat(randomMathOperator, \" </span>\"), \"\\n\");\n    });\n    task.innerHTML = \"\\n        <span class=\\\"oneTask oneTask--js\\\">\".concat(matchTask.join(''), \"</span>\\n        <span>=</span>\\n        <span>\\n            <label for=\\\"result\").concat(i, \"\\\"></label>\\n            <input type=\\\"number\\\" class=\\\"task-list__result\\\" id=\\\"result\").concat(i, \"\\\">\\n        </span>\\n        \");\n    nodeParent.appendChild(task);\n  };\n\n  for (var i = 0; i < howManyTask; i++) {\n    _loop(i);\n  }\n}\n\nfunction generateTask() {\n  var howManyTask = Number(document.querySelector(\".how-many-task\").value);\n  var howManyValue = Number(document.querySelector(\".how-many-value\").value);\n  var toValue = Number(document.querySelector(\".to-value\").value);\n  var taskList = document.querySelector('.task-list__task');\n\n  if (taskList.childElementCount > 0) {\n    var answer = window.confirm(\"You have task to do. Do you want to generate new task?\");\n\n    if (answer) {\n      removeChild(taskList);\n      getMathOperation();\n      addTask(howManyTask, taskList, 'li', howManyValue, toValue);\n    } else return;\n  }\n\n  removeChild(taskList);\n  getMathOperation();\n  addTask(howManyTask, taskList, 'li', howManyValue, toValue);\n} // function checkCurrentTask() {\n//\n// }\n\n\nfunction checkAllTask() {\n  var allTask = _toConsumableArray(document.querySelectorAll(\".task-list__item\"));\n\n  allTask.forEach(function (task) {\n    var oneTask = task.querySelector('.oneTask--js');\n\n    var allNumbers = _toConsumableArray(oneTask.querySelectorAll('span')).map(function (span) {\n      return parseInt(span.textContent) ? parseInt(span.textContent) : span.textContent;\n    });\n\n    var answerInput = task.querySelector('.task-list__result');\n    var userAnswer = parseFloat(answerInput.value);\n    var resultText = task.querySelector('.result-text');\n\n    if (resultText) {\n      task.removeChild(resultText);\n    }\n\n    if (answerInput.value.length <= 0) {\n      answerInput.classList.remove('in-correct');\n      answerInput.classList.remove('correct');\n      return answerInput.setAttribute(\"placeholder\", \"complete the result\");\n    }\n\n    ;\n    var correctAnswer = document.createElement('span');\n    correctAnswer.classList.add('result-text');\n    correctAnswer.classList.add('correct-answer');\n    correctAnswer.textContent = 'Great! That is correct result :)';\n    var inCorrectAnswer = document.createElement('span');\n    inCorrectAnswer.classList.add('result-text');\n    inCorrectAnswer.classList.add('in-correct-answer');\n    inCorrectAnswer.textContent = 'Upss try again.';\n    var counter = Number(stringMath(allNumbers.join('')).toFixed(2));\n\n    if (counter === userAnswer) {\n      answerInput.classList.add('correct');\n      answerInput.classList.remove('in-correct');\n      task.appendChild(correctAnswer);\n    } else {\n      answerInput.classList.add('in-correct');\n      answerInput.classList.remove('correct');\n      task.appendChild(inCorrectAnswer);\n    }\n  });\n}\n\nfunction test() {\n  var generateBtn = document.querySelector('.btn-generate-task-js');\n  generateBtn.addEventListener('click', generateTask); // generateBtn.click();\n}\n\nbtnCheckAllTask.addEventListener('click', checkAllTask); // setTimeout(() => {\n//     btnCheckAllTask.click();\n// }, 300)\n\ntest();\n\n\n//# sourceURL=webpack:///./src/scripts/test.js?");
 
                 /***/ }),
 
@@ -1472,7 +1522,7 @@
             /*! no static exports found */
             /***/ (function(module, exports, __webpack_require__) {
 
-                eval("__webpack_require__(/*! D:\\Nauka\\repository\\xTest-webpack\\node_modules\\webpack-dev-server\\client\\index.js?http://localhost:5001 */\"./node_modules/webpack-dev-server/client/index.js?http://localhost:5001\");\nmodule.exports = __webpack_require__(/*! ./src/index.js */\"./src/index.js\");\n\n\n//# sourceURL=webpack:///multi_(webpack)-dev-server/client?");
+                eval("__webpack_require__(/*! /home/michal/Documents/dev/x-test/xTest-webpack/node_modules/webpack-dev-server/client/index.js?http://localhost:5001 */\"./node_modules/webpack-dev-server/client/index.js?http://localhost:5001\");\nmodule.exports = __webpack_require__(/*! ./src/index.js */\"./src/index.js\");\n\n\n//# sourceURL=webpack:///multi_(webpack)-dev-server/client?");
 
                 /***/ })
 
